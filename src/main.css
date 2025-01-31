@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@source "../index.html";
+
+@theme {
+  --font-sans: "Parkinsans", sans-serif;
+}
