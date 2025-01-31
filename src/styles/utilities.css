@@ -1,0 +1,31 @@
+@utility h1 {
+  @apply text-4xl font-bold mb-8;
+}
+
+@utility h2 {
+  @apply text-3xl font-bold mb-8;
+}
+
+@utility h3 {
+  @apply text-2xl font-bold mb-8;
+}
+
+@utility h4 {
+  @apply text-xl font-bold mb-8;
+}
+
+@utility btn {
+  @apply py-2 px-4 rounded cursor-pointer
+}
+
+@utility btn-green {
+  @apply py-2 px-4 rounded bg-green-600 hover:bg-green-700 focus-visible:bg-green-900 active:bg-green-900 text-white
+}
+
+@utility btn-red {
+  @apply py-2 px-4 rounded bg-red-600 hover:bg-red-700 focus-visible:bg-red-900 active:bg-red-900 text-white
+}
+
+@utility btn-slate {
+  @apply py-2 px-4 rounded bg-slate-600 hover:bg-slate-700 focus-visible:bg-slate-900 active:bg-slate-900 text-white
+}

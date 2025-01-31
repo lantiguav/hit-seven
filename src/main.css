@@ -1,6 +1,7 @@
+@layer theme, base, components, utilities;
+
 @import "tailwindcss";
 @source "../index.html";
 
-@theme {
-  --font-sans: "Parkinsans", sans-serif;
-}
+@import "./styles/theme.css" layer(theme);
+@import "./styles/utilities.css";
