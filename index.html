@@ -10,10 +10,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
   </head>
-  <body>
-    <div id="app" class="text-3xl">
-      App
-    </div>
-    <script type="module" src="/src/main.js"></script>
+  <body class="bg-indigo-100">
+    <main id="app" class="p-4 max-w-7xl mx-auto">
+      <h1 class="h1">Hit seven</h1>
+
+      <div 
+        x-data="board"
+        class="grid grid-cols-3 grid-rows-3 place-items-center border border-dashed rounded-lg w-full min-h-[50rem]"
+      >
+        <template x-for="player in players" :key="player.id">
+
+        <div>
+          <div x-text="'Player ' + player.id"></div>
+          <div x-show="playerTurnId === player.id" class="text-bold"> Your turn</div>
+          <template x-if="player.busted">
+            <div class="text-red-600">Busted!</div>
+          </template>
+          <template x-if="player.skipped">
+            <div class="text-yellow-600">Skipped!</div>
+          </template>
+          <div class="cards player-1" x-text="player.hand.join(', ')"></div>
+        </div>
+
+        </template>
+
+        <div class="col-start-2 row-start-2">
+          <div class="text-center mb-4">Deck</div>
+          <template x-if="roundOver">
+            <div class="text-green-600">Round over!</div>
+          </template>
+          <template x-if="!roundOver">
+            <div>
+              <button class="btn btn-slate" id="btn-skip" @click="handleSkip">Skip</button>
+              <button class="btn btn-green" id="btn-hit" @click="handleHit">Hit</button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>
