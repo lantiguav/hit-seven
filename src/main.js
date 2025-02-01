@@ -102,7 +102,7 @@ document.addEventListener("alpine:init", () => {
         this.bustedOrSkippedIds.add(player.id);
       }
 
-      if (player.hand.length === 7) {
+      if (player.hand.length === 7 && !player.busted) {
         this.roundOver = true;
         player.score += 15
         this.players[this.playerTurnId - 1] = player;
