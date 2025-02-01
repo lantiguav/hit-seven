@@ -1,0 +1,15 @@
+.btn {
+  @apply py-2 px-4 rounded cursor-pointer
+}
+
+.btn-green {
+  @apply py-2 px-4 rounded bg-green-600 hover:bg-green-700 focus-visible:bg-green-900 active:bg-green-900 text-white
+}
+
+.btn-red {
+  @apply py-2 px-4 rounded bg-red-600 hover:bg-red-700 focus-visible:bg-red-900 active:bg-red-900 text-white
+}
+
+.btn-slate {
+  @apply py-2 px-4 rounded bg-slate-600 hover:bg-slate-700 focus-visible:bg-slate-900 active:bg-slate-900 text-white
+}
