@@ -87,6 +87,7 @@ document.addEventListener("alpine:init", () => {
 
       if (this.cards.length === 0) {
         this.cards = [...this.discardPile];
+        this.discardPile = [];
         this.shuffle(this.cards);
       }
 
@@ -149,6 +150,7 @@ document.addEventListener("alpine:init", () => {
 
         if (this.cards.length === 0) {
           this.cards = [...this.discardPile];
+          this.discardPile = [];
           this.shuffle(this.cards);
         }
 
