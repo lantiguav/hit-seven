@@ -1,5 +1,5 @@
 # Hit seven
-Hit seven is a digital adaptation of the board game Flip 7. Play it (here)[https://hit7.victorlantigua.com/].
+Hit seven is a digital adaptation of the board game Flip 7. Play it [here](https://hit7.victorlantigua.com/).
 
 ## Game Instructions
 
