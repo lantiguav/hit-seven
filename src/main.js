@@ -1,159 +1,157 @@
-import Alpine from 'alpinejs'
- 
-window.Alpine = Alpine
+import Alpine from "alpinejs";
 
-document.addEventListener('alpine:init', () => {
-    Alpine.data('board', () => ({
-        cards: ['0'],
-        round: 1,
-        playerCount: 3,
-        players: [],
-        playerTurnId: 1,
-        bustedOrSkippedIds: new Set([]),
-        roundOver: false,
-        gameOver: false,
-        winnerId: null,
-        winnerScore: 0,
-        init(){
-          for(let i = 1; i <= 12; i++) {
-            for (let j = 1; j <= i; j++) {
-              this.cards.push(i.toString())
+window.Alpine = Alpine;
+
+document.addEventListener("alpine:init", () => {
+  Alpine.data("board", () => ({
+    cards: ["0"],
+    round: 1,
+    playerCount: 3,
+    players: [],
+    playerTurnId: 1,
+    bustedOrSkippedIds: new Set([]),
+    roundOver: false,
+    gameOver: false,
+    winnerId: null,
+    winnerScore: 0,
+    init() {
+      for (let i = 1; i <= 12; i++) {
+        for (let j = 1; j <= i; j++) {
+          this.cards.push(i.toString());
+        }
+      }
+
+      this.shuffle(this.cards);
+
+      for (let i = 1; i <= this.playerCount; i++) {
+        this.players.push({
+          id: i,
+          hand: [this.cards.pop()],
+          busted: false,
+          skipped: false,
+          score: 0,
+        });
+      }
+
+      this.$watch("roundOver", (value) => {
+        if (!value) {
+          return;
+        }
+
+        // Calculate scores
+        this.players = this.players.map((player) => {
+          if (player.busted) {
+            return player;
+          }
+
+          const score =
+            player.score +
+            player.hand.reduce((acc, curr) => acc + parseInt(curr), 0);
+          player.score = score;
+
+          if (score >= 200) {
+            this.gameOver = true;
+
+            if (score >= this.winnerScore) {
+              this.winnerId = player.id;
+              this.winnerScore = score;
             }
           }
 
-          this.shuffle(this.cards)
+          return player;
+        });
+      });
+    },
+    shuffle(array) {
+      let currentIndex = array.length;
 
-          for (let i =1; i <= this.playerCount; i++) {
-            this.players.push({
-              id: i,
-              hand: [ this.cards.pop() ],
-              busted: false,
-              skipped: false,
-              score: 0
-            })
-          }
+      // While there remain elements to shuffle...
+      while (currentIndex != 0) {
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
 
-          this.$watch('roundOver', value => {
-            if (!value) {
-              return
-            }
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex],
+          array[currentIndex],
+        ];
+      }
+    },
+    isUnique(array) {
+      return array.length === new Set(array).size;
+    },
+    handleHit() {
+      if (this.roundOver) {
+        return;
+      }
 
-            // Calculate scores
-            this.players = this.players.map(player => {
-              if (player.busted) {
-                return player;
-              }
+      const card = this.cards.pop();
 
-              const score = player.score + player.hand.reduce((acc, curr) => acc + parseInt(curr), 0)
-              player.score = score
-          
-              if (score >= 200) {
-                this.gameOver = true
+      const player = this.players[this.playerTurnId - 1];
+      player.hand.push(card);
 
-                if (score >= this.winnerScore) {
-                  this.winnerId = player.id
-                  this.winnerScore = score
-                }
-              }
+      if (!this.isUnique(player.hand)) {
+        player.busted = true;
+        this.bustedOrSkippedIds.add(player.id);
+      }
 
-              return player
-            })
+      if (player.hand.length === 7) {
+        this.roundOver = true;
+      }
 
+      this.players[this.playerTurnId - 1] = player;
 
-          })
-        },
-        shuffle(array) {
-          let currentIndex = array.length;
+      if (this.bustedOrSkippedIds.size === this.playerCount) {
+        // Round over
+        this.roundOver = true;
+        return;
+      }
 
-          // While there remain elements to shuffle...
-          while (currentIndex != 0) {
+      this.playerTurnId = this.getNextPlayerId(this.playerTurnId);
+    },
+    handleSkip() {
+      if (this.roundOver) {
+        return;
+      }
 
-            // Pick a remaining element...
-            let randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
+      const player = this.players[this.playerTurnId - 1];
+      player.skipped = true;
+      this.bustedOrSkippedIds.add(player.id);
 
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-              array[randomIndex], array[currentIndex]];
-          }
-        },
-        isUnique(array){
-          return array.length === new Set(array).size
-        },
-        handleHit() {
-          if (this.roundOver) {
-            return 
-          }
+      if (this.bustedOrSkippedIds.size === this.playerCount) {
+        // Round over
+        this.roundOver = true;
+        return;
+      }
 
-          const card = this.cards.pop();
-          
-          const player = this.players[this.playerTurnId - 1]
-          player.hand.push(card)
+      this.players[this.playerTurnId - 1] = player;
 
-          if (!this.isUnique(player.hand)) {
-            player.busted = true
-            this.bustedOrSkippedIds.add(player.id)
-          }
+      this.playerTurnId = this.getNextPlayerId(this.playerTurnId);
+    },
+    handleNextRoundClick() {
+      this.round += 1;
+      this.roundOver = false;
+      this.bustedOrSkippedIds = new Set([]);
 
-          if (player.hand.length === 7) {
-            this.roundOver = true
-          }
+      this.players = this.players.map((player) => {
+        player.skipped = false;
+        player.busted = false;
+        player.hand = [this.cards.pop()];
 
-          this.players[this.playerTurnId -1] = player
+        return player;
+      });
+    },
+    getNextPlayerId(currentPlayerId) {
+      const next = (currentPlayerId % this.playerCount) + 1;
 
+      if (this.bustedOrSkippedIds.has(next)) {
+        return this.getNextPlayerId(next);
+      }
 
-          if (this.bustedOrSkippedIds.size === this.playerCount) {
-            // Round over
-            this.roundOver = true
-            return;
-          }
-          
-          this.playerTurnId = this.getNextPlayerId(this.playerTurnId)
-        },
-        handleSkip() {
-          if (this.roundOver) {
-            return 
-          }
+      return next;
+    },
+  }));
+});
 
-          const player = this.players[this.playerTurnId - 1]
-          player.skipped = true;
-          this.bustedOrSkippedIds.add(player.id)
-
-          if (this.bustedOrSkippedIds.size === this.playerCount) {
-            // Round over
-            this.roundOver = true
-            return;
-          }
-
-          this.players[this.playerTurnId -1] = player
-
-          this.playerTurnId = this.getNextPlayerId(this.playerTurnId)
-        },
-        handleNextRoundClick() {
-          this.round += 1
-          this.roundOver = false
-          this.bustedOrSkippedIds = new Set([])
-
-          this.players = this.players.map(player => {
-            player.skipped = false
-            player.busted = false
-            player.hand = [ this.cards.pop() ]
-
-            return player
-          })
-        },
-        getNextPlayerId(currentPlayerId) {
-          const next = (currentPlayerId % this.playerCount) + 1 
-          
-          if (this.bustedOrSkippedIds.has(next)) {
-            return this.getNextPlayerId(next)
-
-          }
-
-          return next
-
-        },
-    }))
-})
-
-Alpine.start()
+Alpine.start();
