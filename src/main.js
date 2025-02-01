@@ -7,7 +7,7 @@ document.addEventListener("alpine:init", () => {
     cards: ["0"],
     discardPile: [],
     round: 1,
-    playerCount: 3,
+    playerCount: 5,
     players: [],
     playerTurnId: 1,
     bustedOrSkippedIds: new Set([]),
@@ -15,12 +15,17 @@ document.addEventListener("alpine:init", () => {
     gameOver: false,
     winnerId: null,
     winnerScore: 0,
+    cardsRemaining: 0,
     init() {
       for (let i = 1; i <= 12; i++) {
         for (let j = 1; j <= i; j++) {
           this.cards.push(i.toString());
         }
       }
+
+      this.$watch("cards", () => {
+        this.cardsRemaining = this.cards.length;
+      });
 
       this.shuffle(this.cards);
 
@@ -33,6 +38,7 @@ document.addEventListener("alpine:init", () => {
           score: 0,
         });
       }
+
 
       this.$watch("roundOver", (value) => {
         if (!value) {
@@ -104,9 +110,9 @@ document.addEventListener("alpine:init", () => {
 
       if (player.hand.length === 7 && !player.busted) {
         this.roundOver = true;
-        player.score += 15
+        player.score += 15;
         this.players[this.playerTurnId - 1] = player;
-        
+
         return;
       }
 
@@ -161,7 +167,7 @@ document.addEventListener("alpine:init", () => {
     },
     handleRestartClick() {
       // TODO: Implement proper restart logic
-      window.location.reload()
+      window.location.reload();
     },
     discardCards() {
       this.players = this.players.map((player) => {

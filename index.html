@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>Vite App</title>
   </head>
   <body class="bg-indigo-100">
@@ -53,23 +53,23 @@
         </template>
 
         <div class="col-start-2 row-start-2">
-          <div class="text-center mb-4">Deck</div>
+          <div class="text-center mb-4" x-text="'Remaining cards: ' + cardsRemaining"></div>
           <template x-if="gameOver">
-            <div>
-              <div class="text-green-600">Game over!</div>
+            <div class="">
+              <div class="text-green-600 text-center">Game over!</div>
               <button class="btn btn-slate" id="btn-restart" @click="handleRestartClick">Restart</button>
             </div>
           </template>
           <template x-if="roundOver && !gameOver">
-            <div>
-              <div class="text-green-600">Round over!</div>
+            <div class="grid items-center gap-2">
+              <div class="text-green-600 text-center">Round over!</div>
               <button class="btn btn-slate" id="btn-next-round" @click="handleNextRoundClick">Next round</button>
             </div>
           </template>
           <template x-if="!roundOver">
-            <div>
-              <button class="btn btn-slate" id="btn-skip" @click="handleSkip">Skip</button>
-              <button class="btn btn-green" id="btn-hit" @click="handleHit">Hit</button>
+            <div class="flex gap-2 justify-center">
+              <button class="btn btn-slate grow" id="btn-skip" @click="handleSkip">Skip</button>
+              <button class="btn btn-green grow" id="btn-hit" @click="handleHit">Hit</button>
             </div>
           </template>
         </div>
