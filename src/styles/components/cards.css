@@ -1,0 +1,59 @@
+.card {
+  @apply border border-slate-400 rounded-lg p-2 min-w-8;
+}
+
+.card-0 {
+  @apply bg-red-100;
+}
+.card-1 {
+  @apply bg-orange-100;
+}
+
+.card-2 {
+  @apply bg-amber-100;
+}
+
+.card-3 {
+  @apply bg-yellow-100;
+}
+
+.card-4 {
+  @apply bg-lime-100;
+}
+
+.card-5 {
+  @apply bg-green-100;
+
+}
+
+.card-6 {
+  @appy bg-esmerald-100;
+
+}
+
+.card-7 {
+  @apply bg-teal-100;
+
+}
+
+.card-8 {
+  @apply bg-cyan-100;
+}
+
+.card-9 {
+  @apply bg-sky-100;
+
+}
+
+.card-10 {
+  @apply bg-blue-100;
+}
+
+.card-11 {
+  @apply bg-fuchsia-100;
+}
+
+.card-12 {
+  @apply bg-violet-100;
+}
+
