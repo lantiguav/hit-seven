@@ -1,0 +1,3 @@
+.link {
+  @apply text-indigo-600 cursor-pointer hover:text-indigo-800 focus-visible:text-indigo-900 active:text-indigo-900 underline underline-offset-2;
+}
