@@ -1,0 +1,4 @@
+p, ul, ol {
+  @apply mb-4;
+}
+
