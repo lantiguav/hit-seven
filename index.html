@@ -17,6 +17,7 @@
         x-data="board"
     >
       <h1 class="h1">Hit seven</h1>
+      <p class="mb-2">Hit seven is a digital adaptation of the board game Flip 7. See <a class="link" href="#instructions">instructions</a></p>
       <span x-text="'Round ' + round"></span>
 
       <div 
@@ -74,6 +75,38 @@
           </template>
         </div>
       </div>
+      <section id="instructions">
+        <h2 class="h2 mt-8">Instructions</h2>
+        <h3 class="h3 mb-4">Game objective</h2>
+            <p>The goal is to be the first player to reach <strong>200 points</strong>. Players earn points based on the total value of the cards in their hand at the end of each round.</p>
+            
+            <h3 class="h3">How to play</h3>
+            <ul class="list-disc pl-5">
+                <li><strong>Hit</strong> – Draw a new card to increase your score. However, <span class="highlight">if you receive a card that matches one you already have, you bust</span> and score <strong>0 points</strong> for the round.</li>
+                <li><strong>Skip</strong> – End your turn and <strong>score points equal to the sum of your cards</strong>.</li>
+            </ul>
+            
+            <h3 class="h3">Scoring and winning</h3>
+            <ul class="list-disc pl-5">
+                <li>At the end of a round, each player who hasn’t busted adds their hand’s total value to their overall score.</li>
+                <li>The game continues until one or more players reach <strong>200 points</strong>.</li>
+                <li>If multiple players exceed 200 points in the same round, the player with the <strong>highest total score</strong> wins.</li>
+            </ul>
+            
+            <h3 class="h3">Deck composition</h3>
+            <p>The deck contains <strong>one 0 card</strong> and decreasing numbers of each value from <strong>12 to 1</strong>:</p>
+            <ul class="list-disc pl-5">
+                <li><strong>Twelve (12)</strong> cards of value 12</li>
+                <li><strong>Eleven (11)</strong> cards of value 11</li>
+                <li><strong>Ten (10)</strong> cards of value 10</li>
+                <li>...</li>
+                <li><strong>One (1)</strong> card of value 1</li>
+                <li><strong>One (0)</strong> card of value 0</li>
+            </ul>
+            <p><span class="highlight">Higher-value cards are more common, but they also increase your chances of busting!</span></p>
+            
+            <p><strong>Good luck!</strong> 🎴</p>
+      </section>
     </main>
     <script type="module" src="./src/main.js"></script>
   </body>
