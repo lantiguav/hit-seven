@@ -11,33 +11,52 @@
     <title>Vite App</title>
   </head>
   <body class="bg-indigo-100">
-    <main id="app" class="p-4 max-w-7xl mx-auto">
+    <main 
+        id="app"
+        class="p-4 max-w-7xl mx-auto"
+        x-data="board"
+    >
       <h1 class="h1">Hit seven</h1>
+      <span x-text="'Round ' + round"></span>
 
       <div 
-        x-data="board"
         class="grid grid-cols-3 grid-rows-3 place-items-center border border-dashed rounded-lg w-full min-h-[50rem]"
       >
         <template x-for="player in players" :key="player.id">
 
-        <div>
-          <div x-text="'Player ' + player.id"></div>
-          <div x-show="playerTurnId === player.id" class="text-bold"> Your turn</div>
-          <template x-if="player.busted">
-            <div class="text-red-600">Busted!</div>
-          </template>
-          <template x-if="player.skipped">
-            <div class="text-yellow-600">Skipped!</div>
-          </template>
-          <div class="cards player-1" x-text="player.hand.join(', ')"></div>
-        </div>
+          <div 
+            class="size-full grid place-items-center rounded-lg"
+            :class="{ 'bg-indigo-200': playerTurnId === player.id && !gameOver, 'bg-teal-300': player.id === winnerId && gameOver }"
+          >
+            <div>
+              <div x-text="'Player ' + player.id"></div>
+              <!-- <div x-show="playerTurnId === player.id" class="text-bold"> Your turn</div> -->
+              <template x-if="player.busted">
+                <div class="text-red-600">Busted!</div>
+              </template>
+              <template x-if="player.skipped">
+                <div class="text-yellow-600">Skipped!</div>
+              </template>
+              <div class="cards player-1" x-text="player.hand.join(', ')"></div>
+              <div class="mt-4" x-text="'Score: ' + player.score"></div>
+            </div>
+          </div>
 
         </template>
 
         <div class="col-start-2 row-start-2">
           <div class="text-center mb-4">Deck</div>
-          <template x-if="roundOver">
-            <div class="text-green-600">Round over!</div>
+          <template x-if="gameOver">
+            <div>
+              <div class="text-green-600">Game over!</div>
+              <button class="btn btn-slate" id="btn-restart" @click="handleRestartClick">Restart</button>
+            </div>
+          </template>
+          <template x-if="roundOver && !gameOver">
+            <div>
+              <div class="text-green-600">Round over!</div>
+              <button class="btn btn-slate" id="btn-next-round" @click="handleNextRoundClick">Next round</button>
+            </div>
           </template>
           <template x-if="!roundOver">
             <div>

@@ -5,11 +5,15 @@ window.Alpine = Alpine
 document.addEventListener('alpine:init', () => {
     Alpine.data('board', () => ({
         cards: ['0'],
-        playerCount: 8,
+        round: 1,
+        playerCount: 3,
         players: [],
         playerTurnId: 1,
         bustedOrSkippedIds: new Set([]),
         roundOver: false,
+        gameOver: false,
+        winnerId: null,
+        winnerScore: 0,
         init(){
           for(let i = 1; i <= 12; i++) {
             for (let j = 1; j <= i; j++) {
@@ -22,10 +26,41 @@ document.addEventListener('alpine:init', () => {
           for (let i =1; i <= this.playerCount; i++) {
             this.players.push({
               id: i,
-              hand: [],
-              busted: false
+              hand: [ this.cards.pop() ],
+              busted: false,
+              skipped: false,
+              score: 0
             })
           }
+
+          this.$watch('roundOver', value => {
+            if (!value) {
+              return
+            }
+
+            // Calculate scores
+            this.players = this.players.map(player => {
+              if (player.busted) {
+                return player;
+              }
+
+              const score = player.score + player.hand.reduce((acc, curr) => acc + parseInt(curr), 0)
+              player.score = score
+          
+              if (score >= 200) {
+                this.gameOver = true
+
+                if (score >= this.winnerScore) {
+                  this.winnerId = player.id
+                  this.winnerScore = score
+                }
+              }
+
+              return player
+            })
+
+
+          })
         },
         shuffle(array) {
           let currentIndex = array.length;
@@ -94,6 +129,19 @@ document.addEventListener('alpine:init', () => {
 
           this.playerTurnId = this.getNextPlayerId(this.playerTurnId)
         },
+        handleNextRoundClick() {
+          this.round += 1
+          this.roundOver = false
+          this.bustedOrSkippedIds = new Set([])
+
+          this.players = this.players.map(player => {
+            player.skipped = false
+            player.busted = false
+            player.hand = [ this.cards.pop() ]
+
+            return player
+          })
+        },
         getNextPlayerId(currentPlayerId) {
           const next = (currentPlayerId % this.playerCount) + 1 
           
@@ -104,7 +152,7 @@ document.addEventListener('alpine:init', () => {
 
           return next
 
-        }
+        },
     }))
 })
 
