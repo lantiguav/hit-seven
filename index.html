@@ -21,7 +21,7 @@
       <strong x-text="'Round ' + round"></strong>
 
       <div 
-        class="grid grid-cols-3 grid-rows-3 place-items-center border border-dashed rounded-lg w-full min-h-[50rem]"
+        class="grid grid-cols-3 grid-rows-3 place-items-center border border-dashed rounded-lg w-full min-h-[35rem] md:min-h-[40rem]"
       >
         <template x-for="player in players" :key="player.id">
 
@@ -82,7 +82,7 @@
             
             <h3 class="h3">How to play</h3>
             <ul class="list-disc pl-5">
-                <li><strong>Hit</strong> – Draw a new card to increase your score. However, <span class="highlight">if you receive a card that matches one you already have, you bust</span> and score <strong>0 points</strong> for the round.</li>
+                <li><strong>Hit</strong> – Draw a new card to increase your score. However, <span class="highlight">if you receive a card that matches one you already have, you bust</span> and score <strong>0 points</strong> for the round. If you hit 7 different cards, the round ends immediately and you obtain <strong>15 extra points</strong>.</li>
                 <li><strong>Skip</strong> – End your turn and <strong>score points equal to the sum of your cards</strong>.</li>
             </ul>
             

@@ -7,7 +7,7 @@ Hit seven is a digital adaptation of the board game Flip 7. Play it [here](https
 The goal is to be the first player to reach **200 points**. Players earn points based on the total value of the cards in their hand at the end of each round.
 
 ### How to Play
-- **Hit** – Draw a new card to increase your score. However, **if you receive a card that matches one you already have, you bust** and score **0 points** for the round.
+- **Hit** – Draw a new card to increase your score. However, **if you receive a card that matches one you already have, you bust** and score **0 points** for the round. If you hit 7 different cards, the round ends immediately and you obtain **15 extra points**
 - **Skip** – End your turn and **score points equal to the sum of your cards**.
 
 ### Scoring and Winning
