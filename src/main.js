@@ -5,6 +5,7 @@ window.Alpine = Alpine;
 document.addEventListener("alpine:init", () => {
   Alpine.data("board", () => ({
     cards: ["0"],
+    discardPile: [],
     round: 1,
     playerCount: 3,
     players: [],
@@ -86,6 +87,11 @@ document.addEventListener("alpine:init", () => {
         return;
       }
 
+      if (this.cards.length === 0) {
+        this.cards = [...this.discardPile];
+        this.shuffle(this.cards);
+      }
+
       const card = this.cards.pop();
 
       const player = this.players[this.playerTurnId - 1];
@@ -98,12 +104,15 @@ document.addEventListener("alpine:init", () => {
 
       if (player.hand.length === 7) {
         this.roundOver = true;
+        player.score += 15
+        this.players[this.playerTurnId - 1] = player;
+        
+        return;
       }
 
       this.players[this.playerTurnId - 1] = player;
 
       if (this.bustedOrSkippedIds.size === this.playerCount) {
-        // Round over
         this.roundOver = true;
         return;
       }
@@ -134,11 +143,30 @@ document.addEventListener("alpine:init", () => {
       this.roundOver = false;
       this.bustedOrSkippedIds = new Set([]);
 
+      this.discardCards();
+
       this.players = this.players.map((player) => {
         player.skipped = false;
         player.busted = false;
+
+        if (this.cards.length === 0) {
+          this.cards = [...this.discardPile];
+          this.shuffle(this.cards);
+        }
+
         player.hand = [this.cards.pop()];
 
+        return player;
+      });
+    },
+    handleRestartClick() {
+      // TODO: Implement proper restart logic
+      window.location.reload()
+    },
+    discardCards() {
+      this.players = this.players.map((player) => {
+        this.discardPile.push(...player.hand);
+        player.hand = [];
         return player;
       });
     },
