@@ -4,4 +4,6 @@
 @source "../index.html";
 
 @import "./styles/theme.css" layer(theme);
+@import "./styles/components.css" layer(components);
+
 @import "./styles/utilities.css";
